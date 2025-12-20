@@ -1,26 +1,27 @@
-from src.rectangle import Rectangle
 import pytest
 
-
-@pytest.mark.parametrize("type_of_number",
-                         ["integer",
-                          "float"],
-                         id=["asd"])
-def test_rectangle_area_positive(api_server, type_of_number):
-    side_a, side_b, area = api_server(type_of_number=type_of_number)
-    print(side_a, side_b, area)
-    r = Rectangle(side_a, side_b)
-    assert r.get_area == area
+from rectangle import Rectangle
 
 
-@pytest.mark.parametrize(
-    ("side_a", "side_b"),
-    [
-        (0, 5),
-        (-1, 5.5)
-    ],
-    ids=["zero value", "negative value"]
-)
-def test_rectangle_negative(side_a, side_b):
+
+@pytest.mark.rectangle
+def test_rectangle_area_and_perimeter_integers():
+    rect = Rectangle(3, 5)
+
+    assert rect.get_area() == 15
+    assert rect.get_perimeter() == 16
+
+@pytest.mark.rectangle
+def test_rectangle_area_and_perimeter_floats():
+    rect = Rectangle(3.5, 5.5)
+
+    assert rect.get_area() == 3.5 * 5.5
+    assert rect.get_perimeter() == 2 * (3.5 + 5.5)
+
+
+
+@pytest.mark.rectangle
+@pytest.mark.parametrize("side_a, side_b", [(0, 5), (-1, 5), (5, 0), (5, -1)])
+def test_rectangle_sides_must_be_positive(side_a, side_b):
     with pytest.raises(ValueError):
         Rectangle(side_a, side_b)
