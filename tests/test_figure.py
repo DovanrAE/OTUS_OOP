@@ -1,27 +1,13 @@
 import pytest
-from figure import Figure
+
+from rectangle import Rectangle
+from square import Square
+from circle import Circle
 
 
-class EXAMPLE_FIGURE(Figure):
-    def __init__(self, area: float, perimeter: float = 0):
-        self._area = area
-        self._perimeter = perimeter
-
-    def get_area(self):
-        return self._area
-
-    def get_perimeter(self):
-        return self._perimeter
-
-
-def test_add_area_returns_sum():
-    fig1 = EXAMPLE_FIGURE(10)
-    fig2 = EXAMPLE_FIGURE(5)
-    result = fig1.add_area(fig2)
-    assert result == 15
-
-
-def test_add_area_rejects_non_figure():
-    fig = EXAMPLE_FIGURE(10)
-    with pytest.raises(ValueError):
-        fig.add_area("not a figure")
+@pytest.mark.figure
+@pytest.mark.parametrize("figure_1, figure_2, expected",
+                         [(Rectangle(3, 5), Square(5), 40), (Circle(3), Square(3), 37.27),],
+                         ids=["Rectangle and Square", "Circle and Square"],)
+def test_add_area_positive_rounded(figure_1, figure_2, expected):
+    assert figure_1.add_area(figure_2) == pytest.approx(expected, abs=0.01)

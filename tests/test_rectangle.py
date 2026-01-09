@@ -5,18 +5,13 @@ from rectangle import Rectangle
 
 
 @pytest.mark.rectangle
-def test_rectangle_area_and_perimeter_integers():
-    rect = Rectangle(3, 5)
+@pytest.mark.parametrize(
+    "side_a, side_b, expected_area, expected_perimeter",[(3, 5, 15, 16),(3.5, 5.5, 3.5 * 5.5, 2 * (3.5 + 5.5)),],)
+def test_rectangle_area_and_perimeter(side_a, side_b, expected_area, expected_perimeter):
+    rect = Rectangle(side_a, side_b)
 
-    assert rect.get_area() == 15
-    assert rect.get_perimeter() == 16
-
-@pytest.mark.rectangle
-def test_rectangle_area_and_perimeter_floats():
-    rect = Rectangle(3.5, 5.5)
-
-    assert rect.get_area() == 3.5 * 5.5
-    assert rect.get_perimeter() == 2 * (3.5 + 5.5)
+    assert rect.get_area() == expected_area
+    assert rect.get_perimeter() == expected_perimeter
 
 
 
